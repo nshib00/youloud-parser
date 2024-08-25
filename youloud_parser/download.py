@@ -1,11 +1,12 @@
 import json
 from requests_html import AsyncHTMLSession, HTMLResponse
 from pathlib import Path
+import zipfile
 
 from classes import Album
 from parser import get_album_data_to_download
 from consts import SITE_URL, ALBUMS_REQUEST_HEADERS
-from parser_io import print_album_code_message, print_album_data_message, print_message_after_download
+from parser_io import print_album_code_message, print_album_data_message, print_message_after_download, print_save_album_message
 
 
 async def get_album_code(album: Album) -> str | None:
@@ -24,16 +25,21 @@ async def get_album_code(album: Album) -> str | None:
     )
     if code_response_json['status']:
         return code_response_json['code']
+    
+
+def unpack_album_zip(album_path: Path) -> None:
+    with zipfile.ZipFile(f'{album_path}.zip') as album_zip:
+        album_zip.extractall(path=album_path)
 
 
 def save_album(album_obj: Album, album_response: HTMLResponse) -> None:
-    download_path = Path().home() / 'Downloads' / f'{album_obj.artist} - {album_obj.title}.zip'
-    with open(download_path, 'wb') as file:
-        file.write(album_response.content)
-
-
-def unpack_album_zip(album_path: Path) -> None:
-    pass
+    download_path = Path().home() / 'Downloads' / f'{album_obj.artist} - {album_obj.title}'
+    download_zip_path = download_path / '.zip'
+    with zipfile.ZipFile(download_zip_path, 'wb') as album_zip:
+        album_zip.write(album_response.content)
+    unpack_album_zip(album_path=download_path)
+    download_zip_path.unlink()
+    print_save_album_message(album_path=download_path)
 
 
 async def download_album(album: Album) -> None:
@@ -44,7 +50,6 @@ async def download_album(album: Album) -> None:
             url=f'https://vk.com/doc{album_code}',
             headers=ALBUMS_REQUEST_HEADERS,
         )
-        print(type(album_response))
         save_album(album_obj=album, album_response=album_response)
         print_message_after_download(album)
 
