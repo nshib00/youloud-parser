@@ -3,10 +3,13 @@ from requests_html import AsyncHTMLSession, HTMLResponse
 from pathlib import Path
 import zipfile
 
-from classes import Album
+from classes import Album, DownloadLimit
 from parser import get_album_data_to_download
 from consts import SITE_URL, ALBUMS_REQUEST_HEADERS
-from parser_io import print_album_code_message, print_album_data_message, print_message_after_download, print_save_album_message
+from parser_io import (
+    print_album_code_message, print_album_data_message, print_message_after_download, print_save_album_message
+)
+
 
 
 async def get_album_code(album: Album) -> str | None:
@@ -24,6 +27,7 @@ async def get_album_code(album: Album) -> str | None:
         response_json=code_response_json,
     )
     if code_response_json['status']:
+        DownloadLimit.update()
         return code_response_json['code']
     
 
