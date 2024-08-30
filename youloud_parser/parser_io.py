@@ -31,16 +31,10 @@ async def choose_albums_to_download(albums: list[Album]) -> list[Album]:
 
 def print_album_data_message(album: Album) -> None:
     console.print(f'[#a0dddd]Получаю данные об альбоме [i]"{album.artist} - {album.title}"...[/][/]')
-    
-
-def print_download_message() -> None:
-    console.print('[#a0dddd]Скачиваю альбом...[/]')
 
 
 def print_album_code_message(response_json: dict) -> None:
-    if response_json['status'] == True:
-        print_download_message()
-    else:
+    if response_json['status'] == False:
         if response_json['code'] == -2: 
             timeleft = response_json['timeleft']
             if '1 часов' in timeleft:

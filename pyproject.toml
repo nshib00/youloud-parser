@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "youloud-parser"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["nshib <nshib54321@gmail.com>"]
 readme = "README.md"
@@ -12,6 +12,7 @@ rich = "^13.7.1"
 inquirer = "^3.4.0"
 pyppeteer = {git = "https://github.com/pyppeteer/pyppeteer", rev = "dev"}
 lxml-html-clean = "^0.2.0"
+yaspin = "^3.0.2"
 
 
 [tool.poetry.group.dev.dependencies]

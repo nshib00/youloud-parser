@@ -2,6 +2,7 @@ import json
 from requests_html import AsyncHTMLSession, HTMLResponse
 from pathlib import Path
 import zipfile
+from yaspin import yaspin
 
 from classes import Album
 from parser import get_album_data_to_download
@@ -9,8 +10,6 @@ from consts import SITE_URL, ALBUMS_REQUEST_HEADERS
 from parser_io import (
     print_album_code_message, print_album_data_message, print_message_after_download, print_save_album_message
 )
-
-
 
 async def get_album_code(album: Album) -> str | None:
     album_id, page_id = await get_album_data_to_download(album)
@@ -42,6 +41,7 @@ def save_album(album_obj: Album, album_response: HTMLResponse) -> None:
     print_save_album_message(album_path=download_path)
 
 
+@yaspin(text='Скачиваю альбом...')
 async def download_album(album: Album) -> None:
     album_code = await get_album_code(album)
     if album_code is not None:
