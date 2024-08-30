@@ -45,10 +45,10 @@ def print_album_code_message(response_json: dict) -> None:
             timeleft = response_json['timeleft']
             if '1 часов' in timeleft:
                 timeleft = timeleft.replace('часов', 'час')
-            console.print(f'[orangered]Достигнут лимит скачивания альбомов. До обнуления лимита осталось:[/] [b green]{timeleft}.[/]')
+            console.print(f'[#ff7f44]Достигнут лимит скачивания альбомов. До обнуления лимита осталось:[/] [b green]{timeleft}.[/]')
         else:
-            console.print(f'[firebrick]Возникла ошибка. Код ошибки: {response_json["code"]}.[/]')
-            console.print(f'[maroon]Ответ сервера: {response_json}[/]')
+            console.print(f'[#ff4a44]Возникла ошибка. Код ошибки: {response_json["code"]}.[/]')
+            console.print(f'[#a0dddd]Ответ сервера: {response_json}[/]')
 
 
 def print_message_after_download(album: Album) -> None:
