@@ -23,7 +23,7 @@ def print_info_message() -> None:
 
 
 def get_album_query() -> str:
-    return console.input('[#4be38f]Введите запрос[/] [i #777777](исполнитель и/или название альбома): [/]')
+    return console.input('[#4be38f]Введите запрос[/] [i #777777](исполнитель или название альбома): [/]')
 
 
 def print_no_albums_message() -> None:
