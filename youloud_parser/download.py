@@ -1,15 +1,14 @@
 import json
 from loguru import logger
-from requests_html import AsyncHTMLSession, HTMLResponse
-from pathlib import Path
-import zipfile
+from requests_html import AsyncHTMLSession
 from rich.status import Status
 
 from youloud_parser.classes import Album
+from youloud_parser.files import save_album
 from youloud_parser.parser import get_album_data_to_download
 from youloud_parser.consts import SITE_URL, ALBUMS_REQUEST_HEADERS
 from youloud_parser.parser_io import (
-    print_album_code_message, print_message_after_download, print_save_album_message, console,
+    print_album_code_message, print_message_after_download, console,
     make_download_status_text, make_album_data_status_text
 )
  
@@ -28,19 +27,6 @@ async def get_album_code(album: Album) -> str | None:
         return code_response_json['code']
     
 
-def unpack_album_zip(album_path: Path) -> None:
-    with zipfile.ZipFile(f'{album_path}.zip') as album_zip:
-        album_zip.extractall(path=album_path)
-
-
-def save_album(album_obj: Album, album_response: HTMLResponse) -> None:
-    download_path = Path().home() / 'Downloads' / f'{album_obj.artist} - {album_obj.title}'
-    download_zip_path = download_path.with_suffix('.zip')
-    with open(download_zip_path, 'wb') as album_zip:
-        album_zip.write(album_response.content)
-    unpack_album_zip(album_path=download_path)
-    download_zip_path.unlink()
-    print_save_album_message(album_path=download_path)
 
 
 async def download_album(album: Album, status: Status) -> None:

@@ -94,7 +94,7 @@ def make_album_data_status_text(album: Album) -> str:
 
 
 def make_download_status_text(album: Album) -> str:
-    logger.info('Начало скачивания альбома "{album.artist} - {album.title}".')
+    logger.info(f'Начало скачивания альбома "{album.artist} - {album.title}".')
     return f'[#a0dddd]Скачиваю альбом [i]"{album.artist} - {album.title}"...[/][/]'
 
 
