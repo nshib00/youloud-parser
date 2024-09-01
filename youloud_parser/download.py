@@ -2,18 +2,19 @@ import json
 from requests_html import AsyncHTMLSession, HTMLResponse
 from pathlib import Path
 import zipfile
-from yaspin import yaspin
+from rich.status import Status
 
 from classes import Album
 from parser import get_album_data_to_download
 from consts import SITE_URL, ALBUMS_REQUEST_HEADERS
 from parser_io import (
-    print_album_code_message, print_album_data_message, print_message_after_download, print_save_album_message
+    print_album_code_message, print_message_after_download, print_save_album_message, console,
+    make_download_status_text, make_album_data_status_text
 )
+ 
 
 async def get_album_code(album: Album) -> str | None:
     album_id, page_id = await get_album_data_to_download(album)
-    print_album_data_message(album)
     session = AsyncHTMLSession()
     album_code_response = await session.post(
         url=SITE_URL + '/download.php',
@@ -41,21 +42,27 @@ def save_album(album_obj: Album, album_response: HTMLResponse) -> None:
     print_save_album_message(album_path=download_path)
 
 
-@yaspin(text='Скачиваю альбом...')
-async def download_album(album: Album) -> None:
+async def download_album(album: Album, status: Status) -> None:
+    album_data_text = make_album_data_status_text(album)
+    status.update(album_data_text)
+
     album_code = await get_album_code(album)
+    download_status_text = make_download_status_text(album)
+    status.update(download_status_text)
+
     if album_code is not None:
         session = AsyncHTMLSession()
         album_response = await session.get(
             url=f'https://vk.com/doc{album_code}',
             headers=ALBUMS_REQUEST_HEADERS,
         )
-        save_album(album_obj=album, album_response=album_response)
         print_message_after_download(album)
+        save_album(album_obj=album, album_response=album_response)
 
 
 async def download_albums(albums: list[Album]) -> None:
-    for album_to_download in albums:
-        await download_album(album_to_download)
+    with console.status(status='Начинаю скачивание альбомов.', spinner='aesthetic', spinner_style='#a0dddd') as status:
+        for album_to_download in albums:
+            await download_album(album_to_download, status=status)
     
 

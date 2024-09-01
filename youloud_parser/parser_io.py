@@ -29,10 +29,6 @@ async def choose_albums_to_download(albums: list[Album]) -> list[Album]:
         return []
     
 
-def print_album_data_message(album: Album) -> None:
-    console.print(f'[#a0dddd]Получаю данные об альбоме [i]"{album.artist} - {album.title}"...[/][/]')
-
-
 def print_album_code_message(response_json: dict) -> None:
     if response_json['status'] == False:
         if response_json['code'] == -2: 
@@ -55,5 +51,15 @@ def print_save_album_message(album_path: Path) -> None:
 
 def print_albums_not_found_message() -> None:
     console.print('[#f5bc42]Альбомов по запросу не найдено.[/]')
+
+
+def make_album_data_status_text(album: Album) -> str:
+    return f'[#a0dddd]Получаю данные об альбоме [i]"{album.artist} - {album.title}"...[/][/]'
+
+
+def make_download_status_text(album: Album) -> str:
+    return f'[#a0dddd]Скачиваю альбом [i]"{album.artist} - {album.title}"...[/][/]'
+
+
 
 
