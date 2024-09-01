@@ -2,11 +2,16 @@ import asyncio
 
 from youloud_parser.download import download_albums
 from youloud_parser.parser import parse_albums
-from youloud_parser.parser_io import choose_albums_to_download, print_error_message, print_no_albums_message, print_program_stop_message
+from youloud_parser.parser_io import (
+    choose_albums_to_download, print_error_message, print_no_albums_message, print_program_stop_message,
+    print_ascii_art, print_info_message
+)
 from youloud_parser.exceptions import NoAlbumsError
 
 
 async def main():
+    print_ascii_art()
+    print_info_message()
     while True:
         try:
             albums = await parse_albums()
