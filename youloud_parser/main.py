@@ -11,9 +11,8 @@ from youloud_parser.parser_io import (
     print_info_message,
     print_no_albums_message,
     print_program_stop_message,
-    print_start_message
+    print_start_message,
 )
-
 
 logger.remove(0)
 logger.add("logs.log", level="INFO", rotation="10 KB", compression="zip")

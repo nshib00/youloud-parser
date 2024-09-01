@@ -12,9 +12,7 @@ console = Console()
 
 
 def print_start_message() -> None:
-    console.print(
-        Panel.fit(f"[#4be38f]{'Youloud Parser':-^40}")
-    )
+    console.print(Panel.fit(f"[#4be38f]{'Youloud Parser':-^40}"))
 
 
 def print_info_message() -> None:

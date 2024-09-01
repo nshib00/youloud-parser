@@ -36,7 +36,7 @@ async def download_album(album: Album, status: Status) -> None:
     status.update(album_data_text)
 
     album_code = await get_album_code(album)
-    logger.success('Альбом "{album.artist} - {album.title}" найден на сайте.')
+    logger.success(f'Альбом "{album.artist} - {album.title}" найден на сайте.')
     download_status_text = make_download_status_text(album)
     status.update(download_status_text)
 
@@ -51,6 +51,6 @@ async def download_album(album: Album, status: Status) -> None:
 
 
 async def download_albums(albums: list[Album]) -> None:
-    with console.status(status="Начинаю скачивание альбомов.", spinner="aesthetic", spinner_style="#a0dddd") as status:
+    with console.status(status="Начинаю скачивание альбомов.", spinner_style="#a0dddd") as status:
         for album_to_download in albums:
             await download_album(album_to_download, status=status)

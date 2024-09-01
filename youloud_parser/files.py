@@ -14,7 +14,7 @@ def make_download_path(album_obj: Album):
         album_title = clean_string_for_windows(f"{album_obj.artist} - {album_obj.title}")
     else:
         album_title = f"{album_obj.artist} - {album_obj.title}"
-    return Path().home() / "Downloads" / {album_title}
+    return Path().home() / "Downloads" / album_title
 
 
 def make_album_zip(album_path: Path, album_response: HTMLResponse) -> None:
