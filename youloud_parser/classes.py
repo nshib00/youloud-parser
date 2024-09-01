@@ -8,4 +8,4 @@ class Album:
     link: str
 
     def __repr__(self):
-        return f'{self.artist} - {self.title}'
+        return f"{self.artist} - {self.title}"
