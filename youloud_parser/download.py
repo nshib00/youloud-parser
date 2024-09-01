@@ -1,4 +1,5 @@
 import json
+from loguru import logger
 from requests_html import AsyncHTMLSession, HTMLResponse
 from pathlib import Path
 import zipfile
@@ -47,6 +48,7 @@ async def download_album(album: Album, status: Status) -> None:
     status.update(album_data_text)
 
     album_code = await get_album_code(album)
+    logger.success('Альбом "{album.artist} - {album.title}" найден на сайте.')
     download_status_text = make_download_status_text(album)
     status.update(download_status_text)
 

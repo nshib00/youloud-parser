@@ -2,6 +2,7 @@ from pathlib import Path
 from rich.console import Console
 import inquirer
 from pyfiglet import figlet_format
+from loguru import logger
 
 from youloud_parser.classes import Album
 from youloud_parser.exceptions import NoAlbumsError
@@ -56,6 +57,7 @@ async def choose_albums_to_download(albums: list[Album]) -> list[Album]:
             return needed_albums.get('albums')
         except (AttributeError, IndexError):
             print_no_albums_message()
+            logger.info('Выбор альбомов прерван пользователем.')
             return []
     
 
@@ -65,18 +67,22 @@ def print_album_code_message(response_json: dict) -> None:
             timeleft = response_json['timeleft']
             if '1 часов' in timeleft:
                 timeleft = timeleft.replace('часов', 'час')
-            console.print(f'[#ff7f44]Достигнут лимит скачивания альбомов. До обнуления лимита осталось:[/] [b green]{timeleft}.[/]')
+            limit_info_text = 'Достигнут лимит скачивания альбомов. До обнуления лимита осталось:'
+            console.print(f'[#ff7f44]{limit_info_text}[/] [b green]{timeleft}.[/]')
+            logger.info(f'{limit_info_text} {timeleft}.')
         else:
             console.print(f'[#ff4a44]Возникла ошибка при скачивании. Код ошибки: {response_json["code"]}.[/]')
-            # console.print(f'[#a0dddd]Ответ сервера: {response_json}[/]')
+            logger.error(f'Ошибка скачивания с Youloud. Ответ сервера: {response_json}.')
 
 
 def print_message_after_download(album: Album) -> None:
     console.print(f'[#4be38f]Альбом [i]"{album.artist} - {album.title}"[/] скачан успешно.[/]')
+    logger.success(f'Альбом "{album.artist} - {album.title}" скачан успешно.')
 
 
 def print_save_album_message(album_path: Path) -> None:
     console.print(f'[white]Путь до папки с альбомом:[/] [i #a0c2c2]{album_path}.[/]')
+    logger.info(f'Путь до папки с альбомом: {album_path}.')
 
 
 def print_albums_not_found_message() -> None:
@@ -88,6 +94,7 @@ def make_album_data_status_text(album: Album) -> str:
 
 
 def make_download_status_text(album: Album) -> str:
+    logger.info('Начало скачивания альбома "{album.artist} - {album.title}".')
     return f'[#a0dddd]Скачиваю альбом [i]"{album.artist} - {album.title}"...[/][/]'
 
 
