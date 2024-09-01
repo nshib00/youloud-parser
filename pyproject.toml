@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "youloud-parser"
-version = "0.2.2"
+version = "0.2.3"
 description = ""
 authors = ["nshib <nshib54321@gmail.com>"]
 readme = "README.md"

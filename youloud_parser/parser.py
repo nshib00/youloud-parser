@@ -1,9 +1,9 @@
 from requests_html import AsyncHTMLSession
-from classes import Album
 import re
 
-from consts import SITE_URL, ALBUMS_REQUEST_HEADERS
-from parser_io import get_album_query
+from youloud_parser.consts import SITE_URL, ALBUMS_REQUEST_HEADERS
+from youloud_parser.parser_io import get_album_query
+from youloud_parser.classes import Album
 
 
 data_for_albums = {
@@ -15,6 +15,8 @@ data_for_albums = {
 
 async def get_albums_response():
     data_for_albums['story'] = get_album_query()
+    if not data_for_albums['story']:
+        raise KeyboardInterrupt 
     session = AsyncHTMLSession()
     albums_response = await session.post(
         SITE_URL + '/search',

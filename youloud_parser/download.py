@@ -4,10 +4,10 @@ from pathlib import Path
 import zipfile
 from rich.status import Status
 
-from classes import Album
-from parser import get_album_data_to_download
-from consts import SITE_URL, ALBUMS_REQUEST_HEADERS
-from parser_io import (
+from youloud_parser.classes import Album
+from youloud_parser.parser import get_album_data_to_download
+from youloud_parser.consts import SITE_URL, ALBUMS_REQUEST_HEADERS
+from youloud_parser.parser_io import (
     print_album_code_message, print_message_after_download, print_save_album_message, console,
     make_download_status_text, make_album_data_status_text
 )

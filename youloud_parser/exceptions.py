@@ -1,0 +1,2 @@
+class NoAlbumsError(Exception):
+    pass

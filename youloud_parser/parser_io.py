@@ -2,7 +2,8 @@ from pathlib import Path
 from rich.console import Console
 import inquirer
 
-from classes import Album
+from youloud_parser.classes import Album
+from youloud_parser.exceptions import NoAlbumsError
 
 
 console = Console()
@@ -10,23 +11,40 @@ console = Console()
 
 def get_album_query() -> str:
     return console.input('[#4be38f]Введите запрос[/] [i #777777](исполнитель и/или название альбома): [/]')
+
+
+def print_no_albums_message() -> None:
+    console.print(
+        '[#f5bc42]Альбомов по запросу не найдено. Попробуйте немного изменить предыдущий запрос или ввести новый.[/]'
+    )
+
+
+def print_program_stop_message() -> None:
+    console.print('[#a0dddd]Работа программы завершена.')
+
+
+def print_error_message(error: Exception) -> None:
+    console.print(f'[#ff4a44]Возникла ошибка: {error}.[/]')
  
 
 async def choose_albums_to_download(albums: list[Album]) -> list[Album]:
-    albums_checkbox = [
-            inquirer.Checkbox(
-            'albums',
-            message='Выберите альбом(ы), которые хотите скачать',
-            choices=albums,
-            carousel=True,
-        )
-    ]
-    try:
-        needed_albums: dict = inquirer.prompt(albums_checkbox)
-        return needed_albums.get('albums')
-    except (AttributeError, IndexError):
-        console.print('[#f5bc42]Альбомов по запросу не найдено. Попробуйте немного изменить предыдущий запрос или ввести новый.[/]')
-        return []
+    if not albums:
+        raise NoAlbumsError
+    else:
+        albums_checkbox = [
+                inquirer.Checkbox(
+                'albums',
+                message='Выберите альбом(ы), которые хотите скачать',
+                choices=albums,
+                carousel=True,
+            )
+        ]
+        try:
+            needed_albums: dict = inquirer.prompt(albums_checkbox)
+            return needed_albums.get('albums')
+        except (AttributeError, IndexError):
+            print_no_albums_message()
+            return []
     
 
 def print_album_code_message(response_json: dict) -> None:
@@ -37,8 +55,8 @@ def print_album_code_message(response_json: dict) -> None:
                 timeleft = timeleft.replace('часов', 'час')
             console.print(f'[#ff7f44]Достигнут лимит скачивания альбомов. До обнуления лимита осталось:[/] [b green]{timeleft}.[/]')
         else:
-            console.print(f'[#ff4a44]Возникла ошибка. Код ошибки: {response_json["code"]}.[/]')
-            console.print(f'[#a0dddd]Ответ сервера: {response_json}[/]')
+            console.print(f'[#ff4a44]Возникла ошибка при скачивании. Код ошибки: {response_json["code"]}.[/]')
+            # console.print(f'[#a0dddd]Ответ сервера: {response_json}[/]')
 
 
 def print_message_after_download(album: Album) -> None:
