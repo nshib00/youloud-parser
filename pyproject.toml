@@ -12,7 +12,6 @@ rich = "^13.7.1"
 inquirer = "^3.4.0"
 pyppeteer = "^2.0.0"
 lxml-html-clean = "^0.2.0"
-pyfiglet = "^1.0.2"
 loguru = "^0.7.2"
 
 

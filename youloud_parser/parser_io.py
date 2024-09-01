@@ -2,8 +2,8 @@ from pathlib import Path
 
 import inquirer
 from loguru import logger
-from pyfiglet import figlet_format
 from rich.console import Console
+from rich.panel import Panel
 
 from youloud_parser.classes import Album
 from youloud_parser.exceptions import NoAlbumsError
@@ -11,11 +11,10 @@ from youloud_parser.exceptions import NoAlbumsError
 console = Console()
 
 
-def print_ascii_art() -> None:
-    art = figlet_format("Youloud * Parser")
-    console.print(f'[#4be38f]{"-" * 75}')
-    console.print(f"[#4be38f]{art}")
-    console.print(f'[#4be38f]{"-" * 75}')
+def print_start_message() -> None:
+    console.print(
+        Panel.fit(f"[#4be38f]{'Youloud Parser':-^40}")
+    )
 
 
 def print_info_message() -> None:

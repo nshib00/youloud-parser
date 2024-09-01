@@ -7,12 +7,13 @@ from youloud_parser.exceptions import NoAlbumsError
 from youloud_parser.parser import parse_albums
 from youloud_parser.parser_io import (
     choose_albums_to_download,
-    print_ascii_art,
     print_error_message,
     print_info_message,
     print_no_albums_message,
     print_program_stop_message,
+    print_start_message
 )
+
 
 logger.remove(0)
 logger.add("logs.log", level="INFO", rotation="10 KB", compression="zip")
@@ -20,7 +21,7 @@ logger.add("logs.log", level="INFO", rotation="10 KB", compression="zip")
 
 @logger.catch
 async def main():
-    print_ascii_art()
+    print_start_message()
     print_info_message()
     while True:
         try:
