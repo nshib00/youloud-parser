@@ -15,7 +15,7 @@ from youloud_parser.parser_io import (
 )
 
 logger.remove(0)
-logger.add("logs.log", level="INFO", rotation="10 KB", compression="zip")
+logger.add("logs.log", level="INFO", rotation="100KB", retention="1 day", compression="zip")
 
 
 @logger.catch
