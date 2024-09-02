@@ -31,7 +31,7 @@ def unpack_album_zip(album_path: Path) -> None:
 
 def save_album(album_obj: Album, album_response: HTMLResponse) -> None:
     download_path = make_download_path(album_obj)
-    make_album_zip(album_obj=album_obj, album_response=album_response)
+    make_album_zip(album_path=download_path, album_response=album_response)
     unpack_album_zip(album_path=download_path)
     print_save_album_message(album_path=download_path)
 
